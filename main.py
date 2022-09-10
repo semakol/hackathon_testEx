@@ -1,26 +1,51 @@
-from flask import Flask, render_template, url_for, request, redirect
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from flask import Flask, render_template, url_for, request, redirect, Response
+from db import db_init, db
+from werkzeug.utils import secure_filename
+from models import Image
+from decoder import convert_pic
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///image.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db_init(app)
 
 
-# class Article(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     title = db.Column(db.String(100), nullable=False)
-#     intro = db.Column(db.String(300), nullable=False)
-#     date = db.Column(db.DateTime, default=datetime.utcnow)
-#
-#     def __repr__(self):
-#         return '<Article %r>' % self.id
+
 
 
 @app.route('/')
-def index():
+def page_index():
     return render_template('index.html')
+
+@app.route('/upload_img')
+def page_upload_img():
+    return render_template('upload_img.html')
+
+@app.route('/upload', methods=['POST'])
+def page_upload():
+    pic = request.files['pic']
+    pic_read = pic.read()
+    if not pic:
+        return 'No pic uploaded', 400
+    decode, lang = convert_pic(pic_read)
+    filename = secure_filename(pic.filename)
+    mimetype = pic.mimetype
+    if not filename or not mimetype:
+        return 'Bad upload!', 400
+
+    img = Image(img=pic_read, name=filename, mimetype=mimetype, language=lang, decode=decode)
+    db.session.add(img)
+    db.session.commit()
+
+    return redirect('/')
+
+@app.route('/<int:id>')
+def get_img(id):
+    img = Image.query.filter_by(id=id).first()
+    if not img:
+        return 'Img Not Found!', 404
+
+    return Response(img.img, mimetype=img.mimetype)
 
 
 # @app.route('/create-article', methods=['POST', 'GET'])
