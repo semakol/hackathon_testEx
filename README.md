@@ -1,4 +1,4 @@
-# hackathon test task
+# Hackathon test task
 Тестовое задание для Хакатона
 
 ## Установка
