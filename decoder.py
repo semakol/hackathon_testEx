@@ -27,11 +27,13 @@ def apply_brightness_contrast(input_img, brightness=0, contrast=0):
 
     return buf
 
+
 def convert(image_file):
     img = cv2.resize(image_file, (1920, int(1920 / image_file.shape[1] * image_file.shape[0])))
     img_blur_11 = cv2.GaussianBlur(img, (15, 15), 0)
     img_c = apply_brightness_contrast(img_blur_11, contrast=10, brightness=-64)
     return img_c
+
 
 def convert_pic(image_file):
     image = np.asarray(bytearray(image_file), dtype="uint8")
@@ -42,13 +44,13 @@ def convert_pic(image_file):
     result = reader.readtext(img, detail=1)
 
     result2 = []
+    if len(result) == 0:
+        return '"Ничего"', '"Ничего"'
     for i in result:
-        t = 0
         t = i[1].replace(' ', '')
         t = t.replace('^', 'Л')
         t = t.upper()
         result2.append(t)
-
 
     en = 0
     ru = 0
@@ -63,40 +65,52 @@ def convert_pic(image_file):
                 num += 1
 
     result3 = []
+    result4 = []
+
     if (en > ru) & (en > num):
         reader_en = easyocr.Reader(['en'], gpu=False)
-        result_en = reader_en.readtext(img, detail=1)
+        result_en = reader_en.readtext(img, detail=0)
         lang = 'Англиский'
-        for i in result_en:
-            t = 0
-            t = i[1].replace(' ', '')
-            t = t.replace('0', 'O')
+        if len(result_en) > 1:
+            for i in result_en:
+                t = i.replace(' ', '')
+                result3.append(t)
+        else:
+            result3 = result_en
+        for i in result3:
+            t = i.replace('0', 'O')
             t = t.upper()
-            result3.append(t)
+            result4.append(t)
     elif (ru >= en) & (ru >= num):
         reader_ru = easyocr.Reader(['ru'], gpu=False)
-        result_ru = reader_ru.readtext(img, detail=1)
+        result_ru = reader_ru.readtext(img, detail=0)
         lang = 'Русский'
-        for i in result_ru:
-            t = 0
-            t = i[1].replace(' ', '')
-            t = t.replace('^', 'Л')
+        if len(result_ru) > 1:
+            for i in result_ru:
+                t = i.replace(' ', '')
+                result3.append(t)
+        else:
+            result3 = result_ru
+        for i in result3:
+            t = i.replace('^', 'Л')
             t = t.replace('0', 'O')
             t = t.replace('3', 'З')
             t = t.upper()
-            result3.append(t)
+            result4.append(t)
     elif (num >= ru) & (num >= en):
         reader_en = easyocr.Reader(['en'], gpu=False)
-        result_en = reader_en.readtext(img, detail=1)
+        result_en = reader_en.readtext(img, detail=0)
         lang = 'Цифры'
-        for i in result_en:
-            t = 0
-            t = i[1].replace(' ', '')
-            t = t.upper()
-            result3.append(t)
+        if len(result_en) > 1:
+            for i in result_en:
+                t = i.replace(' ', '')
+                result3.append(t)
+        else:
+            result3 = result_en
+        for i in result3:
+            t = i.upper()
+            result4.append(t)
     decode = ''
-    for i in result3:
+    for i in result4:
         decode = decode + ' ' + i
     return decode, lang
-
-

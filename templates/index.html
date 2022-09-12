@@ -1,39 +1,3 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {% extends 'base.html' %}
 
 {% block title %}
@@ -41,7 +5,57 @@
 {% endblock %}
 
 {% block content %}
-<a href="/upload_img" class="navbar-brand d-flex align-items-center"
-        <strong>aaa</strong>
-        </a>
+<section class="py-4 text-center container bg-light">
+    <a href="/upload_img" class="btn btn-primary" type="button"><h3>Загрузить картинку</h3></a>
+</section>
+{% if db_image|length > 0 %}
+
+{% for el in db_image %}
+<div class="container bg-light">
+
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-4 d-flex flex-wrap align-items-center bg-light rounded">
+                <a href="/id/{{ el.id }}">
+                    <img src="data:image/png;base64,{{ el.img }}" class="img-fluid rounded" alt="" style="max-height:15rem;">
+                </a>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body" style="min-height: 100%">
+                    <div class="row">
+                        <h3>Текст на картинке: {{ el.decode }}</h3>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer bg-white">
+                <div class="row align-items-end flex-d mt-auto">
+                    <div class="col-md-5">
+                        <h4>Тип: {{ el.language }}</h4>
+                    </div>
+                    <div class="col-md-5">
+                        <h5>{{ el.date }}</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+
+                            <a href="/id/{{ el.id }}/del" class="btn btn-danger" type="button">Удалить</a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="py-3 container bg-light">
+
+</section>
+{% endfor %}
+{% else %}
+<section class="py-3 container bg-light">
+    <h1 class="text-center">На данный момент на сайте нет картинок</h1>
+</section>
+{% endif %}
 {% endblock %}

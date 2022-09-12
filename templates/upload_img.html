@@ -5,8 +5,13 @@
 {% endblock %}
 
 {% block content %}
-<form action="http://localhost:5000/upload" enctype="multipart/form-data" method="POST">
-   <input type="file" name="pic" />
-   <input type="submit" value="Загрузить картинку"/>
-</form>
+<section class="py-3 container bg-light text-center">
+    <form action="http://localhost:5000/upload" enctype="multipart/form-data" method="POST">
+        <input class="btn btn-primary" type="file" name="pic"/>
+        <input class="btn btn-primary" type="submit" value="Загрузить"/>
+    </form>
+</section>
+<section class="py-3 container bg-light text-center">
+    <h3>После нажатия кнопки подождите когда загрузиться картинка</h3>
+</section>
 {% endblock %}
