@@ -69,7 +69,7 @@ def del_img(id):
         db.session.commit()
 
     except:
-        return 'При удалении катинки произошла ошибка!'
+        return 'При удалении картинки произошла ошибка!'
     return redirect('/')
 
 
