@@ -8,10 +8,11 @@
 <section class="py-3 container bg-light text-center">
     <form action="http://localhost:5000/upload" enctype="multipart/form-data" method="POST">
         <input class="btn btn-primary" type="file" name="pic"/>
-        <input class="btn btn-primary" type="submit" value="Загрузить"/>
+        <input class="btn btn-primary" type="submit" value="Загрузить" onclick="this.form.submit(); this.disabled = true;"/>
     </form>
 </section>
 <section class="py-3 container bg-light text-center">
     <h3>После нажатия кнопки подождите, когда загрузится картинка</h3>
 </section>
+<!--<script src="static/disable.js"></script>-->
 {% endblock %}

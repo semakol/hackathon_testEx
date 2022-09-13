@@ -30,7 +30,7 @@ def apply_brightness_contrast(input_img, brightness=0, contrast=0):
 
 def convert(image_file):
     img = cv2.resize(image_file, (1920, int(1920 / image_file.shape[1] * image_file.shape[0])))
-    img_blur_11 = cv2.GaussianBlur(img, (15, 15), 0)
+    img_blur_11 = cv2.GaussianBlur(img, (13, 13), 0)
     img_c = apply_brightness_contrast(img_blur_11, contrast=10, brightness=-64)
     return img_c
 
