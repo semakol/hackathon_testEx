@@ -70,7 +70,7 @@ def convert_pic(image_file):
     if (en > ru) & (en > num):
         reader_en = easyocr.Reader(['en'], gpu=False)
         result_en = reader_en.readtext(img, detail=0)
-        lang = 'Англиский'
+        lang = 'Английский'
         if len(result_en) > 1:
             for i in result_en:
                 t = i.replace(' ', '')
