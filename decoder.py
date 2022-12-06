@@ -47,8 +47,8 @@ def convert_pic(image_file):
     if len(result) == 0:
         return '"Ничего"', '"Ничего"'
     for i in result:
-        t = i[1].replace(' ', '')
-        t = t.replace('^', 'Л')
+        t = i[1].replace(' ', ' ')
+        t = i[1].replace('^', 'Л')
         t = t.upper()
         result2.append(t)
 
@@ -73,7 +73,7 @@ def convert_pic(image_file):
         lang = 'Английский'
         if len(result_en) > 1:
             for i in result_en:
-                t = i.replace(' ', '')
+                t = i.replace(' ', ' ')
                 result3.append(t)
         else:
             result3 = result_en
@@ -87,7 +87,7 @@ def convert_pic(image_file):
         lang = 'Русский'
         if len(result_ru) > 1:
             for i in result_ru:
-                t = i.replace(' ', '')
+                t = i.replace(' ', ' ')
                 result3.append(t)
         else:
             result3 = result_ru
@@ -103,7 +103,7 @@ def convert_pic(image_file):
         lang = 'Цифры'
         if len(result_en) > 1:
             for i in result_en:
-                t = i.replace(' ', '')
+                t = i.replace(' ', ' ')
                 result3.append(t)
         else:
             result3 = result_en

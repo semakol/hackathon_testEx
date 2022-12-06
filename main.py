@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, Response
+from flask import Flask, render_template, request, redirect, Response, url_for
 from db import db_init, db
 from werkzeug.utils import secure_filename
 from models import Image
@@ -47,7 +47,7 @@ def page_upload():
         db.session.commit()
     except:
         return 'При загрузке в базу данных произошла ошибка!'
-    return redirect('/')
+    return redirect(url_for('page_index', _external=True))
 
 
 @app.route('/id/<int:id>')
@@ -70,7 +70,7 @@ def del_img(id):
 
     except:
         return 'При удалении картинки произошла ошибка!'
-    return redirect('/')
+    return redirect(url_for('page_index', _external=True))
 
 
 if __name__ == '__main__':
